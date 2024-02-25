@@ -9,7 +9,6 @@ export default function Dashboard() {
 
   React.useEffect(()=>{
     getDashboardDataService().then((data)=>{
-      console.log(data)
       setData(data.data);
     }).catch(e=>{
       alert(e);
@@ -28,7 +27,7 @@ export default function Dashboard() {
               <CardContent>
                 <center>
                   <Typography level="h3">{value.label}</Typography>
-                  <Typography level="h3">{value.count}</Typography>
+                  <Typography level="h3">{value.count?value.count:0}</Typography>
                 </center>
               </CardContent>
             </CardContent>

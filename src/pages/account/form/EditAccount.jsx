@@ -71,9 +71,9 @@ export default function EditAccount() {
             e.preventDefault();
             formData.id = account.id;
             const {msg} = await createAccountService(formData);
-            alert(msg)
+            alert(msg);
         } catch (e) {
-            console.log(e);
+            alert(e);
         }
     }
 
@@ -119,6 +119,18 @@ export default function EditAccount() {
                                         variant="standard"
                                         onChange={onInputChange}
                                         defaultValue={account.shipping_address}
+                                    />
+                                </Grid>
+                                <Grid item xl={6} sm={12}>
+                                    <TextField
+                                        fullWidth
+                                        id="name"
+                                        name='total_amount'
+                                        label="Total Amount"
+                                        variant="standard"
+                                        onChange={onInputChange}
+                                        defaultValue={account.total_amount}
+                                        disabled
                                     />
                                 </Grid>
                             </Grid>

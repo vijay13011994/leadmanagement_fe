@@ -26,6 +26,7 @@ export default function ContactTable({rows, setOpen, setContactId}) {
             <TableCell align="center" style={{fontWeight:'bolder'}}>Phone No.</TableCell>
             <TableCell align="center" style={{fontWeight:'bolder'}}>Email</TableCell>
             <TableCell align="center" style={{fontWeight:'bolder'}}>Company Name</TableCell>
+            <TableCell align="center" style={{fontWeight:'bolder'}}>Role</TableCell>
             <TableCell align="center" style={{fontWeight:'bolder'}}>Created At</TableCell>
           </TableRow>
         </TableHead>
@@ -39,6 +40,7 @@ export default function ContactTable({rows, setOpen, setContactId}) {
               <TableCell align="center">{row.phone_number}</TableCell>
               <TableCell align="center">{row.email}</TableCell>
               <TableCell align="center">{row.company_name}</TableCell>
+              <TableCell align="center">{row.role}</TableCell>
               <TableCell align="center">{moment(row.createdAt).format('YYYY-MM-DD')}</TableCell>
             </TableRow>
           ))}

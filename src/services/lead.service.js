@@ -45,3 +45,21 @@ export const getLeadByUserId = async(id) =>{
         return Promise.reject('Something went wrong!');
     }
 }
+
+export const getUnassignedLeadsService = async() =>{
+    try{
+        const { leads, msg } = await getResponse(`lead/get/unassigned`);
+        return Promise.resolve({leads, msg});
+    }catch(e){
+        return Promise.reject('Something went wrong!');
+    }
+}
+
+export const updateUnassignedLeadService = async(id) =>{
+    try{
+        const { msg } = await getResponse(`lead/update/unassigned/${id}`);
+        return Promise.resolve({msg});
+    }catch(e){
+        return Promise.reject('Something went wrong!');
+    }
+}

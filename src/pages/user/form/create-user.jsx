@@ -22,7 +22,7 @@ export default function CreateUser({open, setOpen, getUsers}) {
         getUsers();
         handleClose();
     }catch(e){
-        console.log(e);
+        alert(e);
     }
   }
 

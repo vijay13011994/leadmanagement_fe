@@ -21,6 +21,7 @@ export default function UserTable({rows, deleteUser}) {
             <TableCell style={{fontWeight:'bold'}}>Contact</TableCell>
             <TableCell  style={{fontWeight:'bold'}}>Address</TableCell>
             <TableCell style={{fontWeight:'bold'}}>User Name</TableCell>
+            <TableCell style={{fontWeight:'bold'}}>Password</TableCell>
             <TableCell style={{fontWeight:'bold'}}>Created At</TableCell>
             <TableCell style={{fontWeight:'bold'}}>Action</TableCell>
           </TableRow>
@@ -35,6 +36,7 @@ export default function UserTable({rows, deleteUser}) {
               <TableCell>{row.contact}</TableCell>
               <TableCell>{row.address}</TableCell>
               <TableCell>{row.username}</TableCell>
+              <TableCell>{row.password}</TableCell>
               <TableCell>{moment(row.createdAt).format('DD-MM-YYYY')}</TableCell>
               <TableCell><DeleteIcon fontSize='small' onClick={()=>deleteUser(row.id)}/></TableCell>
             </TableRow>

@@ -31,7 +31,6 @@ export default function CreateConvertationDialog({open, setOpen, id}) {
                 const formJson = Object.fromEntries(formData.entries());
                 formJson.contact_id = id;
                 const {msg} = await createConversationService(formJson);
-                alert(msg)
                 handleClose();
             }catch(e){
                 alert(e)

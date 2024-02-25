@@ -1,6 +1,7 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import EditContact from "../pages/contact/form/EditContact";
+import UnassignedLeads from "../pages/unassignedLead";
 
 const EditOppourtinity = React.lazy(()=> import("../pages/oppourtinity/form/edit-oppourtinity"))
 const NotFound = React.lazy(()=> import( "../pages/not-found"));
@@ -23,8 +24,7 @@ const pages = [{key:'dashboard', value:Dashboard},{key:'lead', value:Lead}, {key
                 {key:'product', value:Product}, {key:'productmapping', value:ProductMapping}, {key:'task', value:Task},
                 {key:'user', value: User}, {key:'lead/:id', value: EditLead}, {key:'opprourtinity/:id', value: EditOppourtinity}
                 , {key:'account', value: Account}, {key:'account/:id', value: EditAccount}
-                , {key:'contact/:id', value: EditContact}
-                
+                , {key:'contact/:id', value: EditContact},{key:'unassigned', value: UnassignedLeads}          
             ];
 
 const Wrap = (component)=> <React.Suspense fallback={<Loading/>}>{component}</React.Suspense>

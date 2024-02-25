@@ -5,6 +5,7 @@ import BasicAccordion from '../components/accordn.componet';
 import { createLead, getLeadById } from '../../../services/lead.service';
 import { getAllUsers } from '../../../services/user.service';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+const isAdmin = sessionStorage.getItem('isAdmin') === 'true'?true:false;
 
 export default function EditLead({ getAllLeads }) {
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function EditLead({ getAllLeads }) {
     const [status, setstatus] = useState(null);
     const stepers = ['hot', 'cold', 'assigned', 'open', 'converted'];
     const [selectedOwner, setSelectedOwner] = useState(null);
-    const [selectedOwnerName, setSelectedOwnerName] = useState('Vijay Giri');
+    const [selectedOwnerName, setSelectedOwnerName] = useState(null);
 
     const [users, setUsers] = useState([]);
     const onOwnerChange = (e, value) => {
@@ -21,20 +22,26 @@ export default function EditLead({ getAllLeads }) {
             setSelectedOwner(value.id);
         }
     }
+    const getUsers = async()=>{
+        try{
+            const { users, msg } = await getAllUsers();
+            const x = users.map(user=> {
+                if(user.id == selectedOwner){
+                    setSelectedOwnerName(user.name);  
+                }
+                return {label: user.name, id: user.id}
+            });
+            setUsers(x);
+        }catch(e){
+            alert(e);
+        }
+    }
     useEffect(() => {
         getLeadById(id).then(({ lead, msg }) => {
             setdata(lead);
             setstatus(lead.status);
             setSelectedOwner(lead.ownerid);
-            getAllUsers().then(({ users, msg }) => {
-                const x = users.map(user=> {
-                    if(user.id == selectedOwner){
-                        setSelectedOwnerName(user.name);  
-                    }
-                    return {label: user.name, id: user.id}
-                });
-                setUsers(x);
-            });
+            getUsers();
         }).catch(e => {
             alert(e.message);
         });
@@ -51,7 +58,7 @@ export default function EditLead({ getAllLeads }) {
             const { msg } = await createLead(formJson);
             alert(msg);
         } catch (e) {
-            console.log(e);
+            alert(e);
         }
     }
 
@@ -182,13 +189,14 @@ export default function EditLead({ getAllLeads }) {
                                     />
                                 </Grid>
                                 <Grid item xl={6} xs={12}>
-                                    <Autocomplete
-                                        size='small'
-                                        id="combo-box-demo"
-                                        defaultValue={selectedOwnerName}
-                                        options={users}
-                                        onChange={onOwnerChange}
-                                        renderInput={(params) => <TextField variant='standard' {...params} label='Owner' />}
+                                    <TextField
+                                        fullWidth
+                                        type='email'
+                                        id="email"
+                                        name='email'
+                                        label="Email"
+                                        defaultValue={data.email}
+                                        variant="standard"
                                     />
                                 </Grid>
                             </Grid>
@@ -218,17 +226,17 @@ export default function EditLead({ getAllLeads }) {
                             </Grid>
                             <br />
                             <Grid container spacing={2}>
-                                <Grid item xl={6} xs={12}>
-                                    <TextField
-                                        fullWidth
-                                        type='email'
-                                        id="email"
-                                        name='email'
-                                        label="Email"
-                                        defaultValue={data.email}
-                                        variant="standard"
+                                {selectedOwnerName}
+                                {isAdmin && <Grid item xl={6} xs={12}>
+                                    <Autocomplete
+                                        size='small'
+                                        id="combo-box-demo"
+                                        defaultValue={selectedOwnerName}
+                                        options={users}
+                                        onChange={onOwnerChange}
+                                        renderInput={(params) => <TextField variant='standard' {...params} label='Owner' defaultValue={selectedOwnerName}/>}
                                     />
-                                </Grid>
+                                </Grid>}
                             </Grid>
                             <br />
                             <center><Button variant='contained' type='submit' color='success'>Save Changes</Button></center>

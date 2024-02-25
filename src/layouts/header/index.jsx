@@ -14,6 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import ChangePasswordForm from './ChangePasswordForm';
+import Logo from '/se_logo.jpeg';
 
 export default function Header() {
   const isAdmin = sessionStorage.getItem('isAdmin');
@@ -21,7 +22,7 @@ export default function Header() {
   if(isAdmin == 'true'){
     pages = ['Dashboard', 'Lead', 'Product', 'User', 'Account']
   }else{
-    pages = ['Dashboard', 'Lead', 'Product', 'Account']
+    pages = ['Dashboard', 'Lead', 'Product', 'Account', 'Unassigned']
   }
   const settings = [{label:'Change Password', trigger :()=>{
     handleCloseUserMenu()
@@ -49,28 +50,10 @@ export default function Header() {
     setAnchorElUser(null);
   };
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{background: 'red'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
-
+          <img src={Logo} style={{width:'150px', height:'60px'}} className="logo" alt="Vite logo" />
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"

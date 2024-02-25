@@ -18,11 +18,11 @@ export default function ChangePasswordForm({open, setOpen}) {
         const formData = new FormData(e.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         const {msg} = await changePassword(formJson);
+        alert(msg);
         handleClose();
         alert(msg);
     }catch(e){
         alert(e.message);
-        console.log(e);
     }
   }
 

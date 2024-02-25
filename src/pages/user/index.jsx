@@ -13,7 +13,7 @@ export default function User() {
       const {users, msg} = await getAllUsers();
       setrows(users);
     }catch(e){
-      alert(e.message);
+      alert(e);
     }
   }
 
@@ -21,9 +21,8 @@ export default function User() {
     try{
       const {msg} = await deleteUserById(id);
       getUsers();
-      alert(msg);
     }catch(e){
-      alert(e.message);
+      alert(e);
     }
   }
 

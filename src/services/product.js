@@ -9,6 +9,15 @@ export const getProducts = async() =>{
     }
 }
 
+export const getProductByIdService = async(id) =>{
+    try{
+        const { product, msg } = await getResponse(`product/${id}`);
+        return Promise.resolve({product, msg});
+    }catch(e){
+        return Promise.reject('Something went wrong!');
+    }
+}
+
 export const createProduct = async(payload) =>{
     try{
         const { msg } = await postResponse(`product`, payload);

@@ -1,9 +1,9 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, Button, FilledInput, FormControl, IconButton, InputAdornment, InputLabel, Paper } from '@mui/material'
+import { Box, Button, Container, FilledInput, FormControl, IconButton, InputAdornment, InputLabel, Paper } from '@mui/material'
 import React, { useState } from 'react';
 import { loginService } from '../../services/login.service';
 import { useNavigate } from 'react-router-dom';
-import img from '../../assets/loginbg.jpg';
+import Logo from '/se_logo.jpeg';
 export default function Login() {
   const navigate = useNavigate();
   const [username, setusername] = useState('');
@@ -20,6 +20,7 @@ export default function Login() {
   const login = async () => {
     try {
       const msg = await loginService({ username, password });
+      window.location.replace('/user/dashboard')
       navigate('/user/dashboard')
     } catch (e) {
       alert(e);
@@ -31,7 +32,6 @@ export default function Login() {
     <div>
       <Box
         marginLeft='33%'
-        marginTop='10%'
         position='relative'
         sx={{
           display: 'flex',
@@ -43,7 +43,9 @@ export default function Login() {
           },
         }}
       >
-        <Paper elevation={3}>
+        <img src={Logo} alt="" />
+        <Container>
+          <div>
           <center>
             <br /><br/>
             <FormControl style={{ justifyContent: 'center' }} sx={{ m: 2, width: '35ch' }} variant="filled">
@@ -83,7 +85,8 @@ export default function Login() {
               Submit
             </Button>
           </center>
-        </Paper>
+          </div>
+        </Container>
       </Box>
     </div>
   )

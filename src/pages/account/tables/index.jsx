@@ -30,7 +30,7 @@ export default function AccountTable({rows}) {
               <TableCell component="th" scope="row"><a onClick={()=> navigate(`${row.id}`)} href='#'>{row.account_name}</a></TableCell>
               <TableCell align="center">{row.billing_address}</TableCell>
               <TableCell align="center">{row.shipping_address}</TableCell>
-              <TableCell align="center">{row.total_amount}</TableCell>
+              <TableCell align="center">{row.total_amount?row.total_amount:0}</TableCell>
             </TableRow>
           ))}
         </TableBody>

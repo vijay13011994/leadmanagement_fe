@@ -6,8 +6,24 @@ import ProductAccordion from '../components/ProductAccordion.componet';
 import { createOpportinity, getOpportinityById } from '../../../services/opportinity';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import TaskAccordion from '../components/TaskAccordion.comonent';
+import { getMappedProductsByOppId } from '../../../services/productmappping';
 
 export default function EditOppourtinity() {
+    const [rows, setRows] = React.useState([]);
+    const [total, setTotal] = React.useState(0);
+    const {id} = useParams();
+    const getMappedProducts = async()=>{
+        try{  
+          const {mappedProducts} = await getMappedProductsByOppId(id);
+          setRows(mappedProducts);
+          setTotal(mappedProducts.map(({ mrp, quantity, discount }) => mrp* quantity-discount).reduce((sum, i) => sum + i, 0));
+        }catch(e){
+          alert(e);
+        }
+      }
+      React.useEffect(()=>{
+        getMappedProducts();
+      },[]);
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const Item = styled(Paper)(({ theme }) => ({
@@ -18,9 +34,8 @@ export default function EditOppourtinity() {
         color: theme.palette.text.secondary,
     }));
 
-    const {id} = useParams();
     const [status, setstatus] = useState('INPROGRESS');
-    const stepers = ['INPROGRESS', 'NEGOTIATION', 'CLOSEDWON', 'CLOSELOST'];
+    const stepers = ['INPROGRESS', 'NEGOTIATION', 'TYSCB', 'CLOSELOST'];
     const [oppourotinity, setOppourotinity] = React.useState(null);
     const getOppo = async () =>{
         try{
@@ -41,8 +56,11 @@ export default function EditOppourtinity() {
             formJson.account_id = oppourotinity.account_id;
             const {msg} = await createOpportinity(formJson);
             alert(msg);
+            if(formJson.status === 'TYSCB' || formJson.status === 'CLOSELOST'){
+                navigate(-2);
+            }
         }catch(e){
-            console.log(e);
+            alert(e);
         }
     }
 
@@ -103,13 +121,25 @@ export default function EditOppourtinity() {
                                             size='small' 
                                             id="combo-box-demo"
                                             defaultValue={oppourotinity.status}
-                                            options={[{label:'INPROGRESS'}, {label:'NEGOTIATION'}, {label:'CLOSEDWON'}, {label:'CLOSELOST'}]}
+                                            options={[{label:'INPROGRESS'}, {label:'NEGOTIATION'}, {label:'TYSCB'}, {label:'CLOSELOST'}]}
                                             renderInput={(params) => <TextField variant='standard' name='status' {...params} label='Status'/>}
+                                        />
+                                    </Grid>
+                                    <br />
+                                    <Grid item xl={6}>
+                                        <TextField
+                                            fullWidth
+                                            id="total"
+                                            name='total'
+                                            label="Total"
+                                            variant="standard"
+                                            defaultValue={total}
+                                            disabled
                                         />
                                     </Grid>
                                 </Grid>
                                 <br /><br />
-                                {status!=='CLOSEDWON' &&<Button type='submit' variant='contained' color='success'>Save Changes</Button>}
+                                {(status!=='TYSCB' && status!=='CLOSELOST') ?<Button type='submit' variant='contained' color='success'>Save Changes</Button>:''}
                                 <br /><br />
                             </form>}
                         </CardContent>
@@ -119,7 +149,7 @@ export default function EditOppourtinity() {
                     <Item>
                         <TaskAccordion open={open} setOpen={setOpen} opportinityid={id} status={status}/>
                         <br />
-                        <ProductAccordion open={open} setOpen={setOpen} oppid={id} status={status}/>
+                        <ProductAccordion open={open} setOpen={setOpen} oppid={id} status={status} rows={rows} getMappedProducts={getMappedProducts}/>
                         <br />
                     </Item>
                 </Grid>

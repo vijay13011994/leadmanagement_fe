@@ -5,9 +5,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { createProduct } from '../../../services/product';
+import { createProduct, getProductByIdService } from '../../../services/product';
 
-export default function CreateProduct({open, setOpen, getAllProducts}) {
+export default function EditProduct({open, setOpen, getAllProducts, product}) {
   const handleClose = () => {
     setOpen(false);
   };
@@ -17,18 +17,19 @@ export default function CreateProduct({open, setOpen, getAllProducts}) {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
+        formJson.id = product.id;
         const {msg} = await createProduct(formJson);
         alert(msg);
         getAllProducts();
         handleClose();
     }catch(e){
-        alert(message);
+        alert(e.message);
     }
   }
 
   return (
     <React.Fragment>
-      <Dialog open={open} onClose={handleClose} fullWidth='xs' maxWidth='xs'>
+      {product && <Dialog open={open} onClose={handleClose} fullWidth='xs' maxWidth='xs'>
         <form onSubmit={submitForm}>
           <DialogTitle style={{textDecoration:'underline', fontWeight:'bold'}}>Product</DialogTitle>
           <DialogContent>
@@ -41,6 +42,7 @@ export default function CreateProduct({open, setOpen, getAllProducts}) {
               type="text"
               fullWidth
               variant="standard"
+              defaultValue={product.name}
             />
             <br />
             <TextField
@@ -52,6 +54,7 @@ export default function CreateProduct({open, setOpen, getAllProducts}) {
               type="number"
               fullWidth
               variant="standard"
+              defaultValue={product.mrp}
             />
             <br />
             <TextField
@@ -62,6 +65,7 @@ export default function CreateProduct({open, setOpen, getAllProducts}) {
               label="SKU"
               fullWidth
               variant="standard"
+              defaultValue={product.sku}
             />
             <br />
             <TextField
@@ -72,6 +76,7 @@ export default function CreateProduct({open, setOpen, getAllProducts}) {
               label="Category"
               fullWidth
               variant="standard"
+              defaultValue={product.category}
             />
           </DialogContent>
           <DialogActions>
@@ -79,7 +84,7 @@ export default function CreateProduct({open, setOpen, getAllProducts}) {
             <Button type='submit' variant='contained' color='success' onClick={handleClose}>Submit</Button>
           </DialogActions>
         </form>
-      </Dialog>
+      </Dialog>}
     </React.Fragment>
   );
 }

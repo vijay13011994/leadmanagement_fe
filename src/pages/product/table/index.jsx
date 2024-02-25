@@ -11,15 +11,7 @@ import { deleteProduct } from '../../../services/product';
 import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-export default function ProductTable({rows, setOpen, getAllProducts}) {
-  const deleteProd = async(id)=>{
-    try{
-      await deleteProduct(id);
-      getAllProducts();
-    }catch(e){
-      alert(e);
-    }
-  }
+export default function ProductTable({rows, setOpen, setOpenEdit, setProduct}) {
   return (
     <Container>
       <Card>
@@ -34,7 +26,7 @@ export default function ProductTable({rows, setOpen, getAllProducts}) {
               <TableCell>Price</TableCell>
               <TableCell>Category</TableCell>
               <TableCell>SKU</TableCell>
-              {/* <TableCell>Action</TableCell> */}
+              <TableCell>Action</TableCell>
             </TableRow>
 
           </TableHead>
@@ -48,7 +40,10 @@ export default function ProductTable({rows, setOpen, getAllProducts}) {
                 <TableCell>{row.mrp}</TableCell>
                 <TableCell>{row.category}</TableCell>
                 <TableCell>{row.sku}</TableCell>
-                {/* <TableCell><Button size='small' variant='contained' color='error' onClick={()=>deleteProd(row.id)}>Delete</Button></TableCell> */}
+                <TableCell><Button size='small' variant='contained' color='warning' onClick={()=>{
+                  setProduct(row)
+                  setOpenEdit(true)
+                  }}>Edit</Button></TableCell>
               </TableRow>
             ))}
           </TableBody>

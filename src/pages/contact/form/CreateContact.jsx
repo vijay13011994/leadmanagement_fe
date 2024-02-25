@@ -37,10 +37,11 @@ export default function CreateContact({open, setOpen, getContactListByAcccountId
   const submitForm = async (e) =>{
     try{
         e.preventDefault();
-        formData.role = 'user'
-        const {msg} = await createContactService(formData);
-        getContactListByAcccountId()
+        const formData = new FormData(e.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        const {msg} = await createContactService(formJson);
         alert(msg);
+        getContactListByAcccountId();
         handleClose();
     }catch(e){
         alert(e);
@@ -140,9 +141,18 @@ export default function CreateContact({open, setOpen, getContactListByAcccountId
                 id="combo-box-demo"
                 options={accounts}
                 onChange={onAccountChange}
-                renderInput={(params) => <TextField {...params} label="Account" />}
+                renderInput={(params) => <TextField variant='standard'  {...params} label="Account" required/>}
                 required
             />
+            <br />
+            <Autocomplete
+                size='small'
+                name='role'
+                id="combo-box-demo"
+                options={[{label:'Finance'}, {label:'Admin'}, {label:'Shipping/Billing'}, {label:'HR'}, {label:'Delivery'}]}
+                renderInput={(params) => <TextField  variant='standard' name='role' {...params} label='Role' required/>}
+                required
+              />
           </DialogContent>
           <DialogActions>
             <Button variant='contained' color='error' onClick={handleClose}>Cancel</Button>

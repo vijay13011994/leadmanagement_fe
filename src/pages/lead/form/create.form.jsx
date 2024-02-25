@@ -14,7 +14,7 @@ import { getAllUsers } from '../../../services/user.service';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const isAdmin = Boolean(sessionStorage.getItem('isAdmin'));
+const isAdmin = sessionStorage.getItem('isAdmin') === 'true'?true:false;
 
 export default function CreateLead({open, setopen, getAllLeads}) {
   const [users, setUsers] = React.useState([]);
@@ -22,6 +22,7 @@ export default function CreateLead({open, setopen, getAllLeads}) {
   
   React.useEffect(() => {
     getAllUsers().then(({ users, msg }) => {
+        users.push({name: 'UNASSIGNED', id: -1});
         setUsers(users.map(user=>{
           return {
             label: user.name,
@@ -29,7 +30,7 @@ export default function CreateLead({open, setopen, getAllLeads}) {
           }
         }));
     }).catch(e => {
-        alert(e.message);
+        alert(e);
     });
 }, []);
   const handleClose = () => {
@@ -41,10 +42,13 @@ export default function CreateLead({open, setopen, getAllLeads}) {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
       const formJson = Object.fromEntries(formData.entries());
+      if(formJson.scoring === ''){
+        formJson.scoring = 0;
+      }
       if(ownerid){
         formJson.ownerid = ownerid;
       }else{
-        formJson.ownerid = sessionStorage.getItem('userId');
+        formJson.ownerid = +sessionStorage.getItem('userId');
       }
       const {msg} = await createLead(formJson);
       alert(msg);
@@ -145,7 +149,14 @@ export default function CreateLead({open, setopen, getAllLeads}) {
                       <Grid item xl={6}>
                         <TextField fullWidth type='number' name="scoring" label="Scoring" variant="standard" size='small'/>
                       </Grid>
-                      {isAdmin && <Grid item xl={6}>
+                      <Grid item xl={6}>
+                        <TextField fullWidth type='email' name="email" label="Email" variant="standard" size='small'/>
+                      </Grid>
+                    </Grid>
+                    <br />
+                    <Grid container spacing={4}>
+                      {isAdmin && 
+                      <Grid item xl={6}>
                         <Autocomplete
                             fullWidth
                             size='small'
@@ -155,12 +166,6 @@ export default function CreateLead({open, setopen, getAllLeads}) {
                             renderInput={(params) => <TextField variant='standard' {...params} label='Owner' required/>}
                         />
                       </Grid>}
-                    </Grid>
-                    <br />
-                    <Grid container spacing={4}>
-                      <Grid item xl={6}>
-                        <TextField fullWidth type='email' name="email" label="Email" variant="standard" size='small'/>
-                      </Grid>
                       <Grid item xl={6}>
                         <TextField fullWidth type='mobileno' name="mobileno" label="Mobile No." variant="standard" size='small' required/>
                       </Grid>

@@ -20,17 +20,21 @@ export default function EditLead({open, setopen}) {
   };
 
   const submitForm = async(e) =>{
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const formJson = Object.fromEntries(formData.entries());
-    if(formJson.isrenewal === "on"){
-      formJson.isrenewal = true;
-    }else{
-      formJson.isrenewal = false;
+    try{
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+      const formJson = Object.fromEntries(formData.entries());
+      if(formJson.isrenewal === "on"){
+        formJson.isrenewal = true;
+      }else{
+        formJson.isrenewal = false;
+      }
+      const msg = await createLead(formJson);
+      alert(msg);
+      handleClose();
+    }catch(e){
+      alert(e);
     }
-    const msg = await createLead(formJson);
-    alert(msg);
-    handleClose();
   }
 
   return (

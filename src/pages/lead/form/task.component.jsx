@@ -13,14 +13,18 @@ export default function CreateTask(props) {
   };
 
   const submitForm = async(e) =>{
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const formJson = Object.fromEntries(formData.entries());
-    formJson.leadid = props.leadid;
-    const msg = await createTask(formJson);
-    alert(msg);
-    handleClose();
-    window.location.reload();
+    try{
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+      const formJson = Object.fromEntries(formData.entries());
+      formJson.leadid = props.leadid;
+      const {msg} = await createTask(formJson);
+      alert(msg);
+      handleClose();
+      window.location.reload();
+    }catch(e){
+      alert(e);
+    }
   }
 
   return (

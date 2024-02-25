@@ -40,7 +40,7 @@ export default function CreateOppourtinity({open, setOpen, getOppo, accountId}) 
         getOppo();
         handleClose();
     }catch(e){
-        console.log(e);
+        alert(e);
     }
   }
 
@@ -87,7 +87,7 @@ export default function CreateOppourtinity({open, setOpen, getOppo, accountId}) 
               fullWidth
               size='small'
               id="combo-box-demo"
-              options={[{label:'INPROGRESS'}, {label:'NEGOTIATION'}, {label:'CLOSEDWON'}, {label:'CLOSELOST'}]}
+              options={[{label:'INPROGRESS'}, {label:'NEGOTIATION'}, {label:'TYSCB'}, {label:'CLOSELOST'}]}
               renderInput={(params) => <TextField variant='standard' name='status' {...params} label='Status'/>}
             />
           </DialogContent>

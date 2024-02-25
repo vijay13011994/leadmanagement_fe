@@ -28,6 +28,15 @@ export const deleteMappedProducts = async(id) =>{
     }
 }
 
+export const updateMappedProductService = async(id, payload) =>{
+    try{
+        const { msg } = await postResponse(`productmapping/${id}`, payload);
+        return Promise.resolve({ msg});
+    }catch(e){
+        return Promise.reject('Something went wrong!');
+    }
+}
+
 export const mapProduct = async(payload) =>{
     try{
         const { msg } = await postResponse(`productmapping`, payload);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Card, CardContent, CardHeader, Grid, TextField } from '@mui/material';
+import { Autocomplete, Button, Card, CardContent, CardHeader, Grid, TextField } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { createContactService, getContactByIdService } from '../../../services/contact.service';
 import OpprotinitiesCollapsibleTable from '../../oppourtinity/components/table.component';
@@ -12,8 +12,6 @@ export default function EditContact() {
   const getContactById = async()=>{
     try{
         const {contact, msg} =  await getContactByIdService(id);
-        console.log(contact)
-
         delete contact.createdAt;
         delete contact.updatedAt;
         setContact(contact);
@@ -24,6 +22,9 @@ export default function EditContact() {
 
   const onInputChange = (e)=>{
     try{
+        console.log(e.target.name);
+        console.log(e.target.value);
+
       setContact(prev=>{
             const temp = {...prev};
             temp[e.target.name] = e.target.value;
@@ -41,11 +42,13 @@ export default function EditContact() {
   const submitForm = async (e) => {
     try {
             e.preventDefault();
-            console.log(contact)
-            const {msg} = await createContactService(contact);
-            alert(msg)
+            const formData = new FormData(e.currentTarget);
+            const formJson = Object.fromEntries(formData.entries());
+            formJson.id = id;
+            const {msg} = await createContactService(formJson);
+            alert(msg);
         } catch (e) {
-            console.log(e);
+            alert(e);
         }
     }
 
@@ -67,7 +70,6 @@ export default function EditContact() {
                                         name='first_name'
                                         label="First Name"
                                         variant="standard"
-                                        onChange={onInputChange}
                                         defaultValue={contact.first_name}
                                         required
                                     />
@@ -79,7 +81,6 @@ export default function EditContact() {
                                         name='last_name'
                                         label="Last Name"
                                         variant="standard"
-                                        onChange={onInputChange}
                                         defaultValue={contact.last_name}
                                         required
                                     />
@@ -91,7 +92,6 @@ export default function EditContact() {
                                         name='phone_number'
                                         label="Phone Number"
                                         variant="standard"
-                                        onChange={onInputChange}
                                         defaultValue={contact.phone_number}
                                     />
                                 </Grid>
@@ -102,7 +102,6 @@ export default function EditContact() {
                                         name='email'
                                         label="Email"
                                         variant="standard"
-                                        onChange={onInputChange}
                                         defaultValue={contact.email}
                                         required
                                     />
@@ -114,8 +113,18 @@ export default function EditContact() {
                                         name='company_name'
                                         label="Company Name"
                                         variant="standard"
-                                        onChange={onInputChange}
                                         defaultValue={contact.company_name}
+                                        required
+                                    />
+                                </Grid>
+                                <Grid item xl={6} sm={12}>
+                                    <Autocomplete
+                                        size='small'
+                                        name='role'
+                                        id="combo-box-demo"
+                                        options={[{label:'Finance'}, {label:'Admin'}, {label:'Shipping/Billing'}, {label:'HR'}, {label:'Delivery'}]}
+                                        renderInput={(params) => <TextField variant='standard' name='role' {...params} label='Role' required/>}
+                                        defaultValue={contact.role}
                                         required
                                     />
                                 </Grid>

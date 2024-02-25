@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import { Autocomplete, Box, Button, Fab, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { getProducts } from '../../../services/product';
-import { deleteMappedProducts, mapProduct } from '../../../services/productmappping';
+import { deleteMappedProducts, mapProduct, updateMappedProductService } from '../../../services/productmappping';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function InvoiceComponent({oppid, rows, getMappedProducts, status}) {
@@ -24,8 +24,12 @@ export default function InvoiceComponent({oppid, rows, getMappedProducts, status
 
   const addProduct = async()=>{
     try{
-      if(!selectedProduct || !quantity){
-        throw new Error('Field value are required');
+      if(!selectedProduct){
+        throw new Error('Please Select Product!');
+      }else if(!quantity){
+        throw new Error('quantity value is required!');
+      }else if(!discount){
+        throw new Error('discount value is required!');
       }
       const payload = {
         product_id: +selectedProduct.id,
@@ -35,6 +39,7 @@ export default function InvoiceComponent({oppid, rows, getMappedProducts, status
         discount
       }
       const {msg} = await mapProduct(payload);
+      alert(msg);
       getMappedProducts();
       setSelectedProduct(null);
       setQuantity(0);
@@ -44,6 +49,15 @@ export default function InvoiceComponent({oppid, rows, getMappedProducts, status
     }
   }
   
+  const onEdit = (event, id)=>{
+    try{
+      const {msg} = updateMappedProductService(id, {key: event.target.name, value: event.target.value});
+      getMappedProducts();
+    }catch(e){
+      alert(e);
+    }
+  }
+
   React.useEffect(()=>{
     getProducts().then(({products, msg})=>setProducts(products));
   },[]);
@@ -67,7 +81,7 @@ export default function InvoiceComponent({oppid, rows, getMappedProducts, status
     <TableContainer component={Paper}>
       <Table aria-label="spanning table">
         <TableHead>
-          {status!=='CLOSEDWON' && <TableRow>
+          {(status!=='TYSCB' && status!=='CLOSELOST') && <TableRow>
           <TableCell width={'250px'}>
             <Autocomplete
                 size='small'
@@ -75,7 +89,7 @@ export default function InvoiceComponent({oppid, rows, getMappedProducts, status
                 options={products}
                 getOptionLabel={(option) => `${option.name}`}
                 onChange={onProductChange}
-                renderInput={(params) => <TextField  variant='outlined' name='leadid' {...params} label='Product' />}
+                renderInput={(params) => <TextField  variant='outlined' name='leadid' {...params} label='Product' required/>}
             />
         </TableCell>
         <TableCell align="center" width={'250px'}>
@@ -89,6 +103,7 @@ export default function InvoiceComponent({oppid, rows, getMappedProducts, status
               value={quantity}
               onChange={(e)=>setQuantity(e.target.value)}
               variant="outlined"
+              required
             />
         </TableCell>
         <TableCell align="center" width={'250px'}>
@@ -102,6 +117,7 @@ export default function InvoiceComponent({oppid, rows, getMappedProducts, status
               value={discount}
               onChange={(e)=>setDiscount(e.target.value)}
               variant="outlined"
+              required
             />
         </TableCell>
         <TableCell align='right'>
@@ -124,11 +140,31 @@ export default function InvoiceComponent({oppid, rows, getMappedProducts, status
             <TableRow key={row.productname}>
               <TableCell>{row.productname}</TableCell>
               <TableCell align="center">{row.sku}</TableCell>
-              <TableCell align="center">{row.quantity}</TableCell>
+              <TableCell align="center">
+                  <TextField
+                        fullWidth
+                        id="quantity"
+                        name='quantity'
+                        variant="standard"
+                        onBlur={(e)=>onEdit(e, row.id)}
+                        defaultValue={row.quantity}
+                        disabled = {(status!=='TYSCB' && status!=='CLOSELOST')?false:true}
+                    />
+                  </TableCell>
               <TableCell align="center">{row.mrp}</TableCell>
-              <TableCell align="center">{row.discount}</TableCell>
+              <TableCell align="center">
+                 <TextField
+                      fullWidth
+                      id="discount"
+                      name='discount'
+                      variant="standard"
+                      onBlur={(e)=>onEdit(e, row.id)}
+                      defaultValue={row.discount}
+                      disabled = {(status!=='TYSCB' && status!=='CLOSELOST')?false:true}
+                  />
+              </TableCell>
               <TableCell align="center">{row.quantity*row.mrp-row.discount}</TableCell>
-              {status!=='CLOSEDWON' && <TableCell align="center"><DeleteIcon fontSize='small' onClick={()=>deleteItem(row.id)}/></TableCell>}
+              {(status!=='TYSCB' && status!=='CLOSELOST') && <TableCell align="center"><DeleteIcon fontSize='small' onClick={()=>deleteItem(row.id)}/></TableCell>}
             </TableRow>
           ))}
           <TableRow>
