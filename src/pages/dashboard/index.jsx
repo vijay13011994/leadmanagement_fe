@@ -20,7 +20,7 @@ export default function Dashboard() {
     <center><h1>Dashboard</h1></center>
       <Grid container spacing={2}>
         
-        {data.map((value)=> (<Grid item xl={3}>   
+        {data.map((value)=> (<Grid item xl={3} xs={12}>   
         <br /><br />  
           <Card variant="solid" color="success" invertedColors>
             <CardContent orientation="horizontal">

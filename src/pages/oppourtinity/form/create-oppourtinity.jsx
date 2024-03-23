@@ -36,7 +36,7 @@ export default function CreateOppourtinity({open, setOpen, getOppo, accountId}) 
         const formJson = Object.fromEntries(formData.entries());
         formJson.account_id = accountId;
         const {msg} = await createOpportinity(formJson);
-        alert(msg);
+        alert("Opportinity created successfully!");
         getOppo();
         handleClose();
     }catch(e){
@@ -87,7 +87,7 @@ export default function CreateOppourtinity({open, setOpen, getOppo, accountId}) 
               fullWidth
               size='small'
               id="combo-box-demo"
-              options={[{label:'INPROGRESS'}, {label:'NEGOTIATION'}, {label:'TYSCB'}, {label:'CLOSELOST'}]}
+              options={[{label:'INPROGRESS'}, {label:'NEGOTIATION'}, {label:'TYFCB'}, {label:'CLOSELOST'}]}
               renderInput={(params) => <TextField variant='standard' name='status' {...params} label='Status'/>}
             />
           </DialogContent>

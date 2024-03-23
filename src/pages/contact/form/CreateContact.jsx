@@ -40,7 +40,7 @@ export default function CreateContact({open, setOpen, getContactListByAcccountId
         const formData = new FormData(e.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         const {msg} = await createContactService(formJson);
-        alert(msg);
+        alert("Contact created successfully!");
         getContactListByAcccountId();
         handleClose();
     }catch(e){

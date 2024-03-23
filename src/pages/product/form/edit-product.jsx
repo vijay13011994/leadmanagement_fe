@@ -19,7 +19,7 @@ export default function EditProduct({open, setOpen, getAllProducts, product}) {
         const formJson = Object.fromEntries(formData.entries());
         formJson.id = product.id;
         const {msg} = await createProduct(formJson);
-        alert(msg);
+        alert("Product updated successfully!");
         getAllProducts();
         handleClose();
     }catch(e){
@@ -43,6 +43,7 @@ export default function EditProduct({open, setOpen, getAllProducts, product}) {
               fullWidth
               variant="standard"
               defaultValue={product.name}
+              required
             />
             <br />
             <TextField
@@ -55,6 +56,7 @@ export default function EditProduct({open, setOpen, getAllProducts, product}) {
               fullWidth
               variant="standard"
               defaultValue={product.mrp}
+              required
             />
             <br />
             <TextField
@@ -66,6 +68,7 @@ export default function EditProduct({open, setOpen, getAllProducts, product}) {
               fullWidth
               variant="standard"
               defaultValue={product.sku}
+              required
             />
             <br />
             <TextField
@@ -77,6 +80,7 @@ export default function EditProduct({open, setOpen, getAllProducts, product}) {
               fullWidth
               variant="standard"
               defaultValue={product.category}
+              required
             />
           </DialogContent>
           <DialogActions>

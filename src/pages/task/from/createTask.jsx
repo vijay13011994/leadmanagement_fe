@@ -8,13 +8,28 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { createTask } from '../../../services/task.service';
 import { Autocomplete } from '@mui/material';
+import { getContactListService } from '../../../services/contact.service';
 
 export default function CreateTaskDialog({open, setOpen, leadid, getTasks, opportinityid}) {
-
+  const [ contactRole, setContactRole] = React.useState('');
+  const [ contactPerson, setContactPerson] = React.useState('');
   const handleClose = () => {
     setOpen(false);
   };
+  const [ contacts, setContacts] = React.useState([]);
 
+  React.useEffect(()=>{
+    getContactListService().then(({contacts})=>{
+      setContacts(contacts.map(contact => {
+        return {
+          id: contact.id,
+          label: contact.first_name+" "+contact.last_name
+        }
+      }));
+    }).catch(e=>{
+      alert(e);
+    });
+  },[]);
 
   const submitForm = async(e) =>{
     try{
@@ -24,7 +39,7 @@ export default function CreateTaskDialog({open, setOpen, leadid, getTasks, oppor
         formJson.leadid = leadid?leadid:null;
         formJson.opportinityid = opportinityid?opportinityid:null;
         const {msg} = await createTask(formJson);
-        alert(msg);
+        alert("Task created successfully!");
         getTasks();
         handleClose();
     }catch(e){
@@ -43,6 +58,14 @@ export default function CreateTaskDialog({open, setOpen, leadid, getTasks, oppor
               <br />
               <TextField
                 id="standard-multiline-static"
+                name='subject'
+                label="Subject"
+                fullWidth
+                variant="standard"
+                required
+              />
+              <TextField
+                id="standard-multiline-static"
                 name='remark'
                 label="Remarks"
                 multiline
@@ -52,22 +75,41 @@ export default function CreateTaskDialog({open, setOpen, leadid, getTasks, oppor
                 required
               />
               <br /><br />
-              <TextField
+              {contactPerson!=='Others' &&
+                <Autocomplete
+                  size='small'
+                  id="combo-box-demo"
+                  value={contactPerson}
+                  options={contacts}
+                  onChange={(e, value)=> {
+                    setContactPerson(value.label)
+                  }}
+                  renderInput={(params) => <TextField  variant='standard' name='contactperson' {...params} label='Contact Person' required/>}
+                  required
+                />
+              }
+              <br /><br />
+              {contactRole!=='Others' &&
+                <Autocomplete
+                  size='small'
+                  id="combo-box-demo"
+                  value={contactRole}
+                  options={[{label:'Owner'}, {label:'Purchaser'}, {label:'Engineer'}, {label:'Acounts'}, {label:'Others'}]}
+                  onChange={(e, value)=> {
+                    setContactRole(value.label)
+                  }}
+                  renderInput={(params) => <TextField  variant='standard' name='contactrole' {...params} label='Contact Role' required/>}
+                  required
+                />
+              }
+              {contactRole==='Others' && <TextField
                 id="standard-multiline-static"
-                name='contactperson'
-                label="Contact Person"
+                name='contactrole'
+                label="Contact Role"
                 fullWidth
                 variant="standard"
                 required
-              />
-              <br /><br />
-              <Autocomplete
-                size='small'
-                id="combo-box-demo"
-                options={[{label:'Finance'}, {label:'Admin'}, {label:'Shipping/Billing'}, {label:'HR'}, {label:'Delivery'}]}
-                renderInput={(params) => <TextField  variant='standard' name='contactrole' {...params} label='Contact Role' required/>}
-                required
-              />
+              />}
               <br /><br />
               <Autocomplete
                 size='small'

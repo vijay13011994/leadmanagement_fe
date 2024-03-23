@@ -26,3 +26,12 @@ export const createTask = async(payload) =>{
         return Promise.reject('Something went wrong!');
     }
 }
+
+export const getTaskService = async(data) =>{
+    try{
+        const { tasks, msg } = await getResponse(`task`, data);
+        return Promise.resolve({tasks, msg});
+    }catch(e){
+        return Promise.reject('Something went wrong!');
+    }
+}

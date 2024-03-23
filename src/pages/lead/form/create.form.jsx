@@ -51,7 +51,7 @@ export default function CreateLead({open, setopen, getAllLeads}) {
         formJson.ownerid = +sessionStorage.getItem('userId');
       }
       const {msg} = await createLead(formJson);
-      alert(msg);
+      alert("Lead created successfully!");
       getAllLeads();
       handleClose();
     }catch(e){
@@ -89,43 +89,43 @@ export default function CreateLead({open, setopen, getAllLeads}) {
               <Grid item xl={12} style={{padding:'10px'}}>
                 <form autoComplete='off' onSubmit={submitForm}>
                     <Grid container spacing={4}>
-                      <Grid item xl={6}>
+                      <Grid item xl={6} xs={12}>
                         <TextField fullWidth name="firstname" label="First Name" variant="standard" size='small' required/>
                       </Grid>
-                      <Grid item xl={6}>
+                      <Grid item xl={6} xs={12}>
                         <TextField fullWidth name="lastname" label="Last Name" variant="standard" size='small'  required/>
                       </Grid>
                     </Grid>
                     <br />
                     <Grid container spacing={4}>
-                      <Grid item xl={6}>
+                      <Grid item xl={6} xs={12}>
                         <TextField fullWidth name="source" label="Source" variant="standard" size='small'  required/>
                       </Grid>
-                      <Grid item xl={6}>
+                      <Grid item xl={6} xs={12}>
                       <TextField fullWidth name="companyname" label="Company Name" variant="standard" size='small'  required/>
                       </Grid>
                     </Grid>
                     <br />
                     <Grid container spacing={4}>
-                      <Grid item xl={6}>
+                      <Grid item xl={6} xs={12}>
                         <TextField fullWidth name="billingaddress" label="Billing Address" variant="standard" size='small' required/>
                       </Grid>
-                      <Grid item xl={6}>
+                      <Grid item xl={6} xs={12}>
                         <TextField fullWidth name="shippingaddress" label="Shipping Address" variant="standard" size='small'  required/>
                       </Grid>
                     </Grid>
                     <br />
                     <Grid container spacing={4}>
-                      <Grid item xl={6}>
+                      <Grid item xl={6} xs={12}>
                         <TextField multiline maxRows={4} fullWidth name="description" label="Description" variant="standard" size='small'  required/>
                       </Grid>
-                      <Grid item xl={6}>
+                      <Grid item xl={6} xs={12}>
                         <TextField fullWidth name="intrestedon" label="Intrested On" variant="standard" size='small'  required/>
                       </Grid>
                     </Grid>
                     <br />
                     <Grid container spacing={4}>
-                      <Grid item xl={6}>
+                      <Grid item xl={6} xs={12}>
                         <Autocomplete
                             fullWidth
                             size='small'
@@ -134,7 +134,7 @@ export default function CreateLead({open, setopen, getAllLeads}) {
                             renderInput={(params) => <TextField variant='standard' name='status' {...params} label='Status' required/>}
                         />
                       </Grid>
-                      <Grid item xl={6}>
+                      <Grid item xl={6} xs={12}>
                         <Autocomplete
                             fullWidth
                             size='small'
@@ -146,17 +146,17 @@ export default function CreateLead({open, setopen, getAllLeads}) {
                     </Grid>
                     <br />
                     <Grid container spacing={4}>
-                      <Grid item xl={6}>
+                      <Grid item xl={6} xs={12}>
                         <TextField fullWidth type='number' name="scoring" label="Scoring" variant="standard" size='small'/>
                       </Grid>
-                      <Grid item xl={6}>
+                      <Grid item xl={6} xs={12}>
                         <TextField fullWidth type='email' name="email" label="Email" variant="standard" size='small'/>
                       </Grid>
                     </Grid>
                     <br />
                     <Grid container spacing={4}>
                       {isAdmin && 
-                      <Grid item xl={6}>
+                      <Grid item xl={6} xs={12}>
                         <Autocomplete
                             fullWidth
                             size='small'
@@ -166,7 +166,7 @@ export default function CreateLead({open, setopen, getAllLeads}) {
                             renderInput={(params) => <TextField variant='standard' {...params} label='Owner' required/>}
                         />
                       </Grid>}
-                      <Grid item xl={6}>
+                      <Grid item xl={6} xs={12}>
                         <TextField fullWidth type='mobileno' name="mobileno" label="Mobile No." variant="standard" size='small' required/>
                       </Grid>
                     </Grid>

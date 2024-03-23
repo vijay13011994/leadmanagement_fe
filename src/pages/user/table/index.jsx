@@ -7,11 +7,30 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import moment from 'moment';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+const filter = {
+  "name":""
+}
+export default function UserTable(props) {
+  const {deleteUser} = props;
+  const [ rows, setRows ] = React.useState([]);
 
-export default function UserTable({rows, deleteUser}) {
+  React.useEffect(()=>{
+    setRows(props.rows)
+  }, [props]);
+  
+  const onFilterChange = (e, field)=>{
+    filter[field] = e.target.value;
+    const filteredData = props.rows.filter(row=> {
+      return (
+          (row.name.toUpperCase()).includes(filter.name.toUpperCase())
+          )
+        }
+      );
+    setRows(filteredData);
+  }
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
@@ -27,6 +46,12 @@ export default function UserTable({rows, deleteUser}) {
           </TableRow>
         </TableHead>
         <TableBody>
+            <TableRow>
+              <TableCell><TextField size='small' onChange={(e)=>onFilterChange(e, "name")}/></TableCell>
+              <TableCell/>
+              <TableCell/>
+              <TableCell/>
+            </TableRow>
           {rows.map((row) => (
             <TableRow
               key={row.name}

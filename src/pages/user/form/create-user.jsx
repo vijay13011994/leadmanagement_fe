@@ -18,7 +18,7 @@ export default function CreateUser({open, setOpen, getUsers}) {
         const formData = new FormData(e.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         const {msg} = await createUser(formJson);
-        alert(msg);
+        alert("User Added Succesfully!");
         getUsers();
         handleClose();
     }catch(e){
@@ -43,6 +43,7 @@ export default function CreateUser({open, setOpen, getUsers}) {
                 type="text"
                 fullWidth
                 variant="standard"
+                required
             />
             <br />
             <TextField
@@ -53,6 +54,7 @@ export default function CreateUser({open, setOpen, getUsers}) {
                 type="text"
                 fullWidth
                 variant="standard"
+                required
             />
             <br />
             <TextField
@@ -63,6 +65,7 @@ export default function CreateUser({open, setOpen, getUsers}) {
                 type="textarea"
                 fullWidth
                 variant="standard"
+                required
             />
             <br />
             </DialogContent>

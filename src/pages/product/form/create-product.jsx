@@ -14,11 +14,12 @@ export default function CreateProduct({open, setOpen, getAllProducts}) {
 
   const submitForm = async(e) =>{
     try{
+      console.log(e)
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         const {msg} = await createProduct(formJson);
-        alert(msg);
+        alert("Product updated successfully!");
         getAllProducts();
         handleClose();
     }catch(e){
@@ -41,6 +42,7 @@ export default function CreateProduct({open, setOpen, getAllProducts}) {
               type="text"
               fullWidth
               variant="standard"
+              required
             />
             <br />
             <TextField
@@ -52,6 +54,7 @@ export default function CreateProduct({open, setOpen, getAllProducts}) {
               type="number"
               fullWidth
               variant="standard"
+              required
             />
             <br />
             <TextField
@@ -62,6 +65,7 @@ export default function CreateProduct({open, setOpen, getAllProducts}) {
               label="SKU"
               fullWidth
               variant="standard"
+              required
             />
             <br />
             <TextField
@@ -72,11 +76,12 @@ export default function CreateProduct({open, setOpen, getAllProducts}) {
               label="Category"
               fullWidth
               variant="standard"
+              required
             />
           </DialogContent>
           <DialogActions>
             <Button variant='contained' color='error' onClick={handleClose}>Cancel</Button>
-            <Button type='submit' variant='contained' color='success' onClick={handleClose}>Submit</Button>
+            <Button type='submit' variant='contained' color='success'>Submit</Button>
           </DialogActions>
         </form>
       </Dialog>

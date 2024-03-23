@@ -1,29 +1,39 @@
-import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { Button, Chip, Fab } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import CreateTaskDialog from '../from/createTask';
-import { createSearchParams, useNavigate } from 'react-router-dom';
-import moment from 'moment';
-import EditTaskDialog from '../from/editTask';
+import React, { useEffect, useState } from 'react'
+import AllTaskTable from './table'
+import { getTaskService } from '../../services/task.service';
+import { Button, Grid } from '@mui/material';
 
-export default function AllTaskTable({isChild, data, leadid, getTasks, opportinityid, status}) {
-  const [open, setOpen] = React.useState(false);
-  const [openEdit, setOpenEdit] = React.useState(false);
-  const [task, setTask] = React.useState(false);
-  const navigate = useNavigate();
-  return (  
+export default function Task(props) {
+  const [data, setdata] = React.useState([]);
+  const [interval, setInterval] = useState(1);
+  const getTask = async ()=>{
+    try{
+      const {tasks} = await getTaskService({interval});
+      setdata(tasks);
+    }catch(e){
+      alert(e);
+    }
+  }
+  useEffect(()=>{
+    getTask();
+  }, [interval]);
+
+
+  return (
     <>
+      <center><h3 style={{textDecoration:'underline'}}>Task List</h3></center>
+      <Grid container spacing={2}>
+          <Grid item xl={3} sx={3}>
+            <Button variant='contained' color='success'>1 Days</Button>
+          </Grid>
+          <Grid item xl={3} sx={3}>
+            <Button variant='contained' color='success'>3 Days</Button>
+          </Grid>
+          <Grid item xl={3} sx={3}>
+            <Button variant='contained' color='success'>7 Days</Button>
+          </Grid>
+      </Grid>
       <TableContainer component={Paper}>
-        {(status!=='TYFCB' && status!=='CLOSELOST') && <Fab color="primary" aria-label="add" size='small' style={{float:'right', marginRight:'10px'}} onClick={()=> setOpen(true)}>
-          <AddIcon />
-        </Fab>}
         <Table aria-label="simple table" >
           <TableHead>
             <TableRow>
@@ -39,10 +49,9 @@ export default function AllTaskTable({isChild, data, leadid, getTasks, opportini
           <TableBody>
             {data.map((row) => (
               <TableRow
-                key={row.name}
+                key={row.subject}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell component="th" scope="row">{row.subject}</TableCell>
                 <TableCell component="th" scope="row">{row.remark}</TableCell>
                 <TableCell component="th" scope="row">{row.contactperson}</TableCell>
                 <TableCell component="th" scope="row">{row.contactrole}</TableCell>
@@ -57,17 +66,6 @@ export default function AllTaskTable({isChild, data, leadid, getTasks, opportini
           </TableBody>
         </Table>
       </TableContainer>
-      <br />
-      {isChild && 
-        <center>
-          <Chip label="see all >" size="small" variant="outlined"
-            onClick={()=>navigate({pathname:'../task',
-            search: createSearchParams({leadid}).toString()})}
-          />
-         </center>
-      }
-      <CreateTaskDialog open={open} setOpen={setOpen} leadid={leadid} getTasks={getTasks} opportinityid={opportinityid}/>
-      <EditTaskDialog open={openEdit} setOpen={setOpenEdit} getTasks={getTasks} task={task}/>
     </>
-  );
+  )
 }

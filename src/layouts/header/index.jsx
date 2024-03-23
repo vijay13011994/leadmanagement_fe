@@ -20,9 +20,23 @@ export default function Header() {
   const isAdmin = sessionStorage.getItem('isAdmin');
   let pages = [];
   if(isAdmin == 'true'){
-    pages = ['Dashboard', 'Lead', 'Product', 'User', 'Account']
+    pages = [
+      {name:'Dashboard', path:'dashboard'},
+      {name:'Lead', path:'lead'},
+      {name:'Product', path:'product'},
+      {name:'User', path:'user'},
+      {name:'Account', path:'account'},
+      {name:'Task', path:'task/list'}
+    ]
   }else{
-    pages = ['Dashboard', 'Lead', 'Product', 'Account', 'Unassigned']
+    pages = [
+      {name:'Dashboard', path:'dashboard'},
+      {name:'Lead', path:'lead'},
+      {name:'Product', path:'product'},
+      {name:'Account', path:'account'},
+      {name:'Unassigned', path:'unassigned'},
+      {name:'Task', path:'task/list'}
+    ]
   }
   const settings = [{label:'Change Password', trigger :()=>{
     handleCloseUserMenu()
@@ -83,40 +97,28 @@ export default function Header() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
+              {pages.length >0 && pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Button
+                    style={{height:'10px'}}
+                    key={page.name}
+                    onClick={()=>navigate(page.path)}
+                    sx={{ my: 2, color: 'black', display: 'block' }}
+                  >
+                    {page.name}
+              </Button>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', textDecoration:'none' } }}>
-            {pages.map((page) => (
+            {pages.length >0  && pages.map((page) => (
               <Button
-                key={page}
-                onClick={()=>navigate(page.toLocaleLowerCase())}
+                key={page.name}
+                onClick={()=>navigate(page.path)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page.name}
               </Button>
             ))}
           </Box>

@@ -35,7 +35,7 @@ export default function EditOppourtinity() {
     }));
 
     const [status, setstatus] = useState('INPROGRESS');
-    const stepers = ['INPROGRESS', 'NEGOTIATION', 'TYSCB', 'CLOSELOST'];
+    const stepers = ['INPROGRESS', 'NEGOTIATION', 'TYFCB', 'CLOSELOST'];
     const [oppourotinity, setOppourotinity] = React.useState(null);
     const getOppo = async () =>{
         try{
@@ -55,8 +55,8 @@ export default function EditOppourtinity() {
             formJson.id = oppourotinity.id;
             formJson.account_id = oppourotinity.account_id;
             const {msg} = await createOpportinity(formJson);
-            alert(msg);
-            if(formJson.status === 'TYSCB' || formJson.status === 'CLOSELOST'){
+            alert("Opportinity updated successfully!");
+            if(formJson.status === 'TYFCB' || formJson.status === 'CLOSELOST'){
                 navigate(-2);
             }
         }catch(e){
@@ -92,7 +92,7 @@ export default function EditOppourtinity() {
                         <CardContent>
                             {oppourotinity && <form onSubmit={submitForm}>
                                 <Grid container spacing={2}>
-                                    <Grid item xl={6}>
+                                    <Grid item xl={6} xs={12}>
                                         <TextField
                                             fullWidth
                                             id="name"
@@ -102,7 +102,7 @@ export default function EditOppourtinity() {
                                             defaultValue={oppourotinity.name}
                                         />
                                     </Grid>
-                                    <Grid item xl={6}>
+                                    <Grid item xl={6} xs={12}>
                                         <TextField
                                             fullWidth
                                             id="description"
@@ -115,18 +115,18 @@ export default function EditOppourtinity() {
                                 </Grid>
                                 <br />
                                 <Grid container spacing={2}>
-                                    <Grid item xl={6}>
+                                    <Grid item xl={6}  xs={12}>
                                         <Autocomplete
                                             fullWidth
                                             size='small' 
                                             id="combo-box-demo"
                                             defaultValue={oppourotinity.status}
-                                            options={[{label:'INPROGRESS'}, {label:'NEGOTIATION'}, {label:'TYSCB'}, {label:'CLOSELOST'}]}
+                                            options={[{label:'INPROGRESS'}, {label:'NEGOTIATION'}, {label:'TYFCB'}, {label:'CLOSELOST'}]}
                                             renderInput={(params) => <TextField variant='standard' name='status' {...params} label='Status'/>}
                                         />
                                     </Grid>
                                     <br />
-                                    <Grid item xl={6}>
+                                    <Grid item xl={6} xs={12}>
                                         <TextField
                                             fullWidth
                                             id="total"
@@ -139,7 +139,7 @@ export default function EditOppourtinity() {
                                     </Grid>
                                 </Grid>
                                 <br /><br />
-                                {(status!=='TYSCB' && status!=='CLOSELOST') ?<Button type='submit' variant='contained' color='success'>Save Changes</Button>:''}
+                                {(status!=='TYFCB' && status!=='CLOSELOST') ?<Button type='submit' variant='contained' color='success'>Save Changes</Button>:''}
                                 <br /><br />
                             </form>}
                         </CardContent>

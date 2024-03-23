@@ -1,4 +1,4 @@
-import { Autocomplete, Button, Checkbox, Container, Grid, Paper, TextField } from '@mui/material';
+import { Autocomplete, Button, Checkbox, CircularProgress, Container, Grid, Paper, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import BasicAccordion from '../components/accordn.componet';
@@ -12,21 +12,23 @@ export default function EditLead({ getAllLeads }) {
     const [data, setdata] = useState(null);
     const { id } = useParams();
     const [status, setstatus] = useState(null);
-    const stepers = ['hot', 'cold', 'assigned', 'open', 'converted'];
+    const stepers = ['HOT', 'COLD', 'ASSIGNED', 'OPEN', 'CONVERTED'];
     const [selectedOwner, setSelectedOwner] = useState(null);
     const [selectedOwnerName, setSelectedOwnerName] = useState(null);
 
     const [users, setUsers] = useState([]);
     const onOwnerChange = (e, value) => {
         if (value) {
+            setSelectedOwnerName(value.label)
             setSelectedOwner(value.id);
         }
     }
-    const getUsers = async()=>{
+    const getUsers = async(userId)=>{
         try{
             const { users, msg } = await getAllUsers();
+            users.push({name: 'UNASSIGNED', id: -1});
             const x = users.map(user=> {
-                if(user.id == selectedOwner){
+                if(user.id == userId){
                     setSelectedOwnerName(user.name);  
                 }
                 return {label: user.name, id: user.id}
@@ -40,8 +42,7 @@ export default function EditLead({ getAllLeads }) {
         getLeadById(id).then(({ lead, msg }) => {
             setdata(lead);
             setstatus(lead.status);
-            setSelectedOwner(lead.ownerid);
-            getUsers();
+            getUsers(lead.ownerid);
         }).catch(e => {
             alert(e.message);
         });
@@ -56,7 +57,7 @@ export default function EditLead({ getAllLeads }) {
             formJson.ownerid = selectedOwner;
             formJson.isrenewal = formData.isrenewal === "on" ? true : false;
             const { msg } = await createLead(formJson);
-            alert(msg);
+            alert("Lead updated successfully!");
         } catch (e) {
             alert(e);
         }
@@ -226,15 +227,14 @@ export default function EditLead({ getAllLeads }) {
                             </Grid>
                             <br />
                             <Grid container spacing={2}>
-                                {selectedOwnerName}
                                 {isAdmin && <Grid item xl={6} xs={12}>
                                     <Autocomplete
                                         size='small'
                                         id="combo-box-demo"
-                                        defaultValue={selectedOwnerName}
+                                        value={selectedOwnerName}
                                         options={users}
                                         onChange={onOwnerChange}
-                                        renderInput={(params) => <TextField variant='standard' {...params} label='Owner' defaultValue={selectedOwnerName}/>}
+                                        renderInput={(params) => <TextField variant='standard' {...params} label='Owner'/>}
                                     />
                                 </Grid>}
                             </Grid>
@@ -247,7 +247,7 @@ export default function EditLead({ getAllLeads }) {
                         <BasicAccordion id={data.id} />
                     </Grid>
                 </Grid>
-            </> : <center>No Data Found</center>
+            </> : <center><CircularProgress /></center>
             }
         </>
     )

@@ -81,7 +81,7 @@ export default function InvoiceComponent({oppid, rows, getMappedProducts, status
     <TableContainer component={Paper}>
       <Table aria-label="spanning table">
         <TableHead>
-          {(status!=='TYSCB' && status!=='CLOSELOST') && <TableRow>
+          {(status!=='TYFCB' && status!=='CLOSELOST') && <TableRow>
           <TableCell width={'250px'}>
             <Autocomplete
                 size='small'
@@ -148,7 +148,7 @@ export default function InvoiceComponent({oppid, rows, getMappedProducts, status
                         variant="standard"
                         onBlur={(e)=>onEdit(e, row.id)}
                         defaultValue={row.quantity}
-                        disabled = {(status!=='TYSCB' && status!=='CLOSELOST')?false:true}
+                        disabled = {(status!=='TYFCB' && status!=='CLOSELOST')?false:true}
                     />
                   </TableCell>
               <TableCell align="center">{row.mrp}</TableCell>
@@ -160,11 +160,11 @@ export default function InvoiceComponent({oppid, rows, getMappedProducts, status
                       variant="standard"
                       onBlur={(e)=>onEdit(e, row.id)}
                       defaultValue={row.discount}
-                      disabled = {(status!=='TYSCB' && status!=='CLOSELOST')?false:true}
+                      disabled = {(status!=='TYFCB' && status!=='CLOSELOST')?false:true}
                   />
               </TableCell>
               <TableCell align="center">{row.quantity*row.mrp-row.discount}</TableCell>
-              {(status!=='TYSCB' && status!=='CLOSELOST') && <TableCell align="center"><DeleteIcon fontSize='small' onClick={()=>deleteItem(row.id)}/></TableCell>}
+              {(status!=='TYFCB' && status!=='CLOSELOST') && <TableCell align="center"><DeleteIcon fontSize='small' onClick={()=>deleteItem(row.id)}/></TableCell>}
             </TableRow>
           ))}
           <TableRow>

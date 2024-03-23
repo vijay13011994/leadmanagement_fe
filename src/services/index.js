@@ -1,9 +1,9 @@
 import axios from "axios";
 const BASEURL = import.meta.env.VITE_BASEURL;
-export const getResponse = async (ep)=>{
+export const getResponse = async (ep, params)=>{
     try{
         const token = sessionStorage.getItem('token');
-        const CONFIG = {headers:{'content-type':'application/json', token}};
+        const CONFIG = {headers:{'content-type':'application/json', token}, params};
         const response = await axios.get(BASEURL+ep, CONFIG);
         if(response.status!==200){
             return Promise.reject(response.statusText);

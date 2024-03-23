@@ -30,7 +30,7 @@ export default function EditLead({open, setopen}) {
         formJson.isrenewal = false;
       }
       const msg = await createLead(formJson);
-      alert(msg);
+      alert("Lead updated successfully!");
       handleClose();
     }catch(e){
       alert(e);

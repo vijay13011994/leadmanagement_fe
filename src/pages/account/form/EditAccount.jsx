@@ -71,7 +71,7 @@ export default function EditAccount() {
             e.preventDefault();
             formData.id = account.id;
             const {msg} = await createAccountService(formData);
-            alert(msg);
+            alert("Account updated successfully!");
         } catch (e) {
             alert(e);
         }
@@ -81,92 +81,93 @@ export default function EditAccount() {
     <>
         <br />
         <Button variant='outlined' color='error' onClick={()=> navigate(-2)} style={{marginLeft:'5px'}}><ArrowBackIcon fontSize='small'/></Button>
-        {account && <Grid container spacing={2}>
-            <Grid item xl={6} sm={12}>
-                <Card>
-                    <CardHeader title="Account Details"></CardHeader>
-                    <CardContent>
-                        <form onSubmit={submitForm}>
-                            <Grid container spacing={2}>
-                                <Grid item xl={6} sm={12}>
-                                    <TextField
-                                        fullWidth
-                                        id="account_name"
-                                        name='account_name'
-                                        label="Account Name"
-                                        variant="standard"
-                                        onChange={onInputChange}
-                                        defaultValue={account.account_name}
-                                    />
+        {account && 
+            <Grid container spacing={2}>
+                <Grid item xl={6} xs={12}>
+                    <Card>
+                        <CardHeader title="Account Details"></CardHeader>
+                        <CardContent>
+                            <form onSubmit={submitForm}>
+                                <Grid container spacing={2}>
+                                    <Grid item xl={6} xs={12}>
+                                        <TextField
+                                            fullWidth
+                                            id="account_name"
+                                            name='account_name'
+                                            label="Account Name"
+                                            variant="standard"
+                                            onChange={onInputChange}
+                                            defaultValue={account.account_name}
+                                        />
+                                    </Grid>
+                                    <Grid item xl={6} xs={12}>
+                                        <TextField
+                                            fullWidth
+                                            id="billing_address"
+                                            name='billing_address'
+                                            label="Billing Address"
+                                            variant="standard"
+                                            onChange={onInputChange}
+                                            defaultValue={account.billing_address}
+                                        />
+                                    </Grid>
+                                    <Grid item xl={6} xs={12}>
+                                        <TextField
+                                            fullWidth
+                                            id="name"
+                                            name='shipping_address'
+                                            label="Shipping Address"
+                                            variant="standard"
+                                            onChange={onInputChange}
+                                            defaultValue={account.shipping_address}
+                                        />
+                                    </Grid>
+                                    <Grid item xl={6} xs={12}>
+                                        <TextField
+                                            fullWidth
+                                            id="name"
+                                            name='total_amount'
+                                            label="Total Amount"
+                                            variant="standard"
+                                            onChange={onInputChange}
+                                            defaultValue={account.total_amount}
+                                            disabled
+                                        />
+                                    </Grid>
                                 </Grid>
-                                <Grid item xl={6} sm={12}>
-                                    <TextField
-                                        fullWidth
-                                        id="billing_address"
-                                        name='billing_address'
-                                        label="Billing Address"
-                                        variant="standard"
-                                        onChange={onInputChange}
-                                        defaultValue={account.billing_address}
-                                    />
-                                </Grid>
-                                <Grid item xl={6} sm={12}>
-                                    <TextField
-                                        fullWidth
-                                        id="name"
-                                        name='shipping_address'
-                                        label="Shipping Address"
-                                        variant="standard"
-                                        onChange={onInputChange}
-                                        defaultValue={account.shipping_address}
-                                    />
-                                </Grid>
-                                <Grid item xl={6} sm={12}>
-                                    <TextField
-                                        fullWidth
-                                        id="name"
-                                        name='total_amount'
-                                        label="Total Amount"
-                                        variant="standard"
-                                        onChange={onInputChange}
-                                        defaultValue={account.total_amount}
-                                        disabled
-                                    />
-                                </Grid>
-                            </Grid>
-                            <br /><br />
-                            <center><Button type='submit' size='small' variant='contained' color='success'>Save Changes</Button></center>
-                        </form>
-                    </CardContent>
-                </Card>
-            </Grid>
-            <Grid item xl={6} sm={12}>
-                <Accordion>
-                    <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1-content"
-                    id="panel1-header"
-                    >
-                    <Typography><p style={{fontWeight:'bolder'}}>Contacts ({contacts.length})</p></Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Contact id={id} contacts={contacts} getContactListByAcccountId={getContactListByAcccountId}/>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion>
-                    <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1-content"
-                    id="panel1-header"
-                    >
-                    <Typography><p style={{fontWeight:'bolder'}}>Opportunities ({opportunities.length})</p></Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Opprourtinity rows={opportunities} getOpportunitiesByAccountId={getOpportunitiesByAccountId} accountId={id}/>
-                    </AccordionDetails>
-                </Accordion>
-            </Grid>
-        </Grid>}
+                                <br /><br />
+                                <center><Button type='submit' size='small' variant='contained' color='success'>Save Changes</Button></center>
+                            </form>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xl={6} xs={12} style={{ width: '100%', overflowX: 'scroll' }}>
+                    <Accordion>
+                        <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1-content"
+                        id="panel1-header"
+                        >
+                        <Typography><p style={{fontWeight:'bolder'}}>Contacts ({contacts.length})</p></Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Contact id={id} contacts={contacts} getContactListByAcccountId={getContactListByAcccountId}/>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1-content"
+                        id="panel1-header"
+                        >
+                        <Typography><p style={{fontWeight:'bolder'}}>Opportunities ({opportunities.length})</p></Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Opprourtinity rows={opportunities} getOpportunitiesByAccountId={getOpportunitiesByAccountId} accountId={id}/>
+                        </AccordionDetails>
+                    </Accordion>
+                </Grid>
+            </Grid>}
     </>
   )
 }

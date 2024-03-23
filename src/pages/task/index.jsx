@@ -1,19 +1,26 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import AllTaskTable from './table'
-import { getTaskFromLeadId } from '../../services/task.service';
+import { getTaskFromLeadId, getTaskService } from '../../services/task.service';
 import { useSearchParams } from 'react-router-dom';
+import { Button, Grid } from '@mui/material';
 
 export default function Task(props) {
   const [data, setdata] = React.useState([]);
   const [searchparams] = useSearchParams();
   const leadid = searchparams.get('leadid');
+  const getTask = async ()=>{
+    try{
+      const {tasks} = await getTaskService({leadid});
+      setdata(tasks);
+    }catch(e){
+      alert(e);
+    }
+  }
   useEffect(()=>{
-    getTaskFromLeadId(leadid).then(({tasks, msg})=>{
-      setdata(tasks)
-    }).catch(e=>{
-      alert(e.message);
-    })
+    getTask();
   }, []);
+
+
   return (
     <>
       <center><h3 style={{textDecoration:'underline'}}>Task List</h3></center>

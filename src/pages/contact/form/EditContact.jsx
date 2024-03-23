@@ -46,7 +46,7 @@ export default function EditContact() {
             const formJson = Object.fromEntries(formData.entries());
             formJson.id = id;
             const {msg} = await createContactService(formJson);
-            alert(msg);
+            alert("Contact updated successfully!");
         } catch (e) {
             alert(e);
         }
@@ -57,13 +57,13 @@ export default function EditContact() {
         <br />
         <Button variant='outlined' color='error' onClick={()=> navigate(-2)} style={{marginLeft:'5px'}}><ArrowBackIcon fontSize='small'/></Button>
         {contact && <Grid container spacing={2}>
-            <Grid item xl={6} sm={12}>
+            <Grid item xl={6} xs={12}>
                 <Card>
                     <CardHeader title="Contact Details"></CardHeader>
                     <CardContent>
                         <form onSubmit={submitForm}>
                             <Grid container spacing={2}>
-                                <Grid item xl={6} sm={12}>
+                                <Grid item xl={6} xs={12}>
                                     <TextField
                                         fullWidth
                                         id="first_name"
@@ -74,7 +74,7 @@ export default function EditContact() {
                                         required
                                     />
                                 </Grid>
-                                <Grid item xl={6} sm={12}>
+                                <Grid item xl={6} xs={12}>
                                     <TextField
                                         fullWidth
                                         id="last_name"
@@ -85,7 +85,7 @@ export default function EditContact() {
                                         required
                                     />
                                 </Grid>
-                                <Grid item xl={6} sm={12}>
+                                <Grid item xl={6} xs={12}>
                                     <TextField
                                         fullWidth
                                         id="phone_number"
@@ -95,7 +95,7 @@ export default function EditContact() {
                                         defaultValue={contact.phone_number}
                                     />
                                 </Grid>
-                                <Grid item xl={6} sm={12}>
+                                <Grid item xl={6} xs={12}>
                                     <TextField
                                         fullWidth
                                         id="email"
@@ -106,7 +106,7 @@ export default function EditContact() {
                                         required
                                     />
                                 </Grid>
-                                <Grid item xl={6} sm={12}>
+                                <Grid item xl={6} xs={12}>
                                     <TextField
                                         fullWidth
                                         id="company_name"
@@ -117,7 +117,7 @@ export default function EditContact() {
                                         required
                                     />
                                 </Grid>
-                                <Grid item xl={6} sm={12}>
+                                <Grid item xl={6} xs={12}>
                                     <Autocomplete
                                         size='small'
                                         name='role'
@@ -135,7 +135,7 @@ export default function EditContact() {
                     </CardContent>
                 </Card>
             </Grid>
-            <Grid item xl={6} sm={12}>
+            <Grid item xl={6} xs={12} style={{ width: '100%', overflowX: 'scroll' }}>
                 <Conversation id={id}/>
             </Grid>
         </Grid>}
