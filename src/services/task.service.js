@@ -1,4 +1,4 @@
-import { getResponse, postResponse } from ".";
+import { deleteResponse, getResponse, postResponse } from ".";
 
 export const getTaskFromLeadId = async(leadid) =>{
     try{
@@ -31,6 +31,15 @@ export const getTaskService = async(data) =>{
     try{
         const { tasks, msg } = await getResponse(`task`, data);
         return Promise.resolve({tasks, msg});
+    }catch(e){
+        return Promise.reject('Something went wrong!');
+    }
+}
+
+export const deleteTaskService = async(id) =>{
+    try{
+        const { msg } = await deleteResponse(`task/${id}`);
+        return Promise.resolve({ msg});
     }catch(e){
         return Promise.reject('Something went wrong!');
     }

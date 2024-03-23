@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import AllTaskTable from './table'
-import { getTaskService } from '../../services/task.service';
+import { deleteTaskService, getTaskService } from '../../services/task.service';
 import { Button, Grid } from '@mui/material';
 
 export default function Task(props) {
@@ -18,6 +18,13 @@ export default function Task(props) {
     getTask();
   }, [interval]);
 
+  const deleteTask = async(id)=>{
+    try{
+      await deleteTaskService(id);
+    }catch(e){
+      alert(e);
+    }
+  }
 
   return (
     <>

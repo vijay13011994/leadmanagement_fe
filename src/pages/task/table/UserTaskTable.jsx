@@ -9,8 +9,9 @@ import Paper from '@mui/material/Paper';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import { Autocomplete, Button, Grid, TextField } from '@mui/material';
-import { getTaskService } from '../../../services/task.service';
+import { deleteTaskService, getTaskService } from '../../../services/task.service';
 import EditTaskDialog from '../from/editTask';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function UserTaskTable() {
   const [rows, setRows] = React.useState([])
@@ -29,6 +30,17 @@ export default function UserTaskTable() {
       alert(e);
     }
   }
+
+  const deleteTask = async(id)=>{
+    try{
+      const {msg} = await deleteTaskService(id);
+      alert(msg);
+      getTasks();
+    }catch(e){
+      alert(e);
+    }
+  }
+
   React.useEffect(()=>{
     getTasks();
   }, [status, type, toDate]);
@@ -111,6 +123,7 @@ export default function UserTaskTable() {
                 <TableCell component="th" scope="row"><a style={{textDecoration:'underline', color:'blue'}} onClick={()=>navigate(`/user/opprourtinity/${opportinityid}`)}>{row.oppname}</a></TableCell>
                 <TableCell component="th" scope="row">{row.ownername}</TableCell>
                 <TableCell component='th'>{moment(row.followupdate).format("DD-MM-YYYY HH:MM")}</TableCell>
+                <TableCell><DeleteIcon onClick={()=>deleteTask(row.id)}/></TableCell>
               </TableRow>
             ))} 
           </TableBody>

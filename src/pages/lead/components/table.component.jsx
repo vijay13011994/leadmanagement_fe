@@ -66,10 +66,10 @@ export default function CollapsibleTable(props) {
 
   const sortData = (order, value) => {
     const data = rows.sort((a,b)=>{
-      if(a[value] > b[value]){
+      if(a[value].toUpperCase() > b[value].toUpperCase()){
         return -order
       }
-      if(a[value] < b[value]){
+      if(a[value].toUpperCase() < b[value].toUpperCase()){
         return order
       }
       return 0;
